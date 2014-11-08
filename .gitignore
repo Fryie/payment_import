@@ -17,3 +17,6 @@
 
 # Ruby version
 .ruby-version
+
+# rspec config
+.rspec
