@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   end
 
   def import_payments
-
+    render nothing: true
   end
 
 end
