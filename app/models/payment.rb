@@ -1,3 +1,3 @@
 class Payment < Sequel::Model
-  one_through_one :order  
+  many_to_one :order  
 end

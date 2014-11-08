@@ -1,14 +1,5 @@
 Sequel.migration do
   change do
-    create_table(:payments) do
-      primary_key :id
-      column :transaction_date, "date"
-      column :value_date, "date"
-      column :reference, "text"
-      column :iban, "text"
-      column :bic, "text"
-    end
-    
     create_table(:schema_migrations) do
       column :filename, "text", :null=>false
       
@@ -29,12 +20,16 @@ Sequel.migration do
       index [:number], :unique=>true
     end
     
-    create_table(:orders_payments) do
-      foreign_key :order_id, :orders, :null=>false, :key=>[:id]
-      foreign_key :payment_id, :payments, :key=>[:id]
+    create_table(:payments) do
+      primary_key :id
+      column :transaction_date, "date"
+      column :value_date, "date"
+      column :reference, "text"
+      column :iban, "text"
+      column :bic, "text"
+      foreign_key :order_id, :orders, :key=>[:id]
       
-      index [:order_id], :name=>:orders_payments_order_id_key, :unique=>true
-      index [:payment_id], :name=>:orders_payments_payment_id_key, :unique=>true
+      index [:order_id], :name=>:payments_order_id_key, :unique=>true
     end
   end
 end
@@ -43,5 +38,6 @@ Sequel.migration do
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20141108184812_create_users.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20141108185220_create_orders.rb')"
     self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20141108194520_create_payments.rb')"
+    self << "INSERT INTO \"schema_migrations\" (\"filename\") VALUES ('20141108200034_do_not_use_join_table_for_orders_and_payments.rb')"
   end
 end

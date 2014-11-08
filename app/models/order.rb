@@ -1,4 +1,4 @@
 class Order < Sequel::Model
   many_to_one :user  
-  one_through_one :payment
+  one_to_one :payment
 end
