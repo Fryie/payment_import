@@ -1,0 +1,5 @@
+<%= form_tag('/import', multipart: true) do %>
+  <%= label_tag(:file, 'Payment File') %>
+  <%= file_field_tag(:file) %>
+  <%= submit_tag('Upload') %>
+<% end %>
