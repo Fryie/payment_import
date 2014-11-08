@@ -17,6 +17,7 @@ describe OrdersController do
     
     before :each do
       allow(ImportPaymentService).to receive(:import) { results }
+      allow(controller).to receive(:file) { 'FILE' }
     end
 
     it 'imports the payments' do
