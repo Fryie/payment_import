@@ -29,7 +29,17 @@ class ImportPaymentService
     private
 
     def matching_order(row)
+      matching_order_for_column(row[4])
+    end
 
+    def matching_order_for_column(column)
+      order_number = if column =~ /K(?:u|ü|ue)ndigung[^\d]*(\d+)/
+                       $1
+                     end
+
+      if order_number
+        Order.where(number: order_number.to_i).first
+      end
     end
 
     def create_payment(row)

@@ -82,4 +82,66 @@ describe ImportPaymentService do
 
   end
 
+  describe '#matching_order' do
+
+    it 'tries to match based on the correct column' do
+      allow(ImportPaymentService).to receive(:matching_order_for_column) { 'ORDER' }
+      row = ["06.11.2014", "06.11.2014", "SEPA-Gutschrift von", "Janek Niete",
+             "Kündigung 19459", "DE7625010030018697xxxx", "PBNKDEFFXXX",
+             "ZV0100170490436400000002", nil, nil, nil, nil, nil, nil, "2,50",
+             "EUR"] 
+      expect(ImportPaymentService.send(:matching_order, row)).to eq 'ORDER'
+      expect(ImportPaymentService).to have_received(:matching_order_for_column).
+        with 'Kündigung 19459'
+    end
+
+  end
+
+  describe '#matching_order_for_column' do
+    
+    before :each do
+      allow(Order).to receive(:where) { ['ORDER'] }
+    end
+
+    context 'parsing column formats' do
+      
+      it 'parses format 1' do
+        ImportPaymentService.send(:matching_order_for_column, 'Kündigung 19459')
+        expect(Order).to have_received(:where).with number: 19459
+      end
+
+      it 'parses format 2' do
+        ImportPaymentService.send(:matching_order_for_column, 'Kundigung :19956')
+        expect(Order).to have_received(:where).with number: 19956
+      end
+
+      it 'parses format 3' do
+        ImportPaymentService.send(:matching_order_for_column, 'Kündigung:18858')
+        expect(Order).to have_received(:where).with number: 18858
+      end
+
+      it 'parses format 4' do
+        ImportPaymentService.send(:matching_order_for_column, 'Kuendigung 20426')
+        expect(Order).to have_received(:where).with number: 20426
+      end
+
+      it 'parses format 5' do
+        ImportPaymentService.send(:matching_order_for_column,
+                                  'Kündigung 19438 (TV Movie) vom 29.10.2014')
+        expect(Order).to have_received(:where).with number: 19438
+      end
+
+      it 'does not query if format unrecognized' do
+        expect(ImportPaymentService.send(:matching_order_for_column, 'XYZ')).to be_nil
+        expect(Order).not_to have_received(:where)
+      end
+
+    end
+
+    it 'returns the order' do
+      expect(ImportPaymentService.send(:matching_order_for_column, 'Kündigung 123')).to eq 'ORDER'
+    end
+
+  end
+
 end
