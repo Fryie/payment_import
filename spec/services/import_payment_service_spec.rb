@@ -5,17 +5,47 @@ describe ImportPaymentService do
 
   describe '#import' do
     
-    let(:order) { Order.create }
+    let(:order) { Order.create(user: User.create) }
+    let(:payment) { Payment.create }
 
     before :each do
       allow(ImportPaymentService).to receive(:matching_order) { order }
+      allow(ImportPaymentService).to receive(:create_payment) { payment }
     end
 
     it 'creates the payments' do
-      allow(ImportPaymentService).to receive(:create_payment)
       allow(CSV).to receive(:read) { [1, 2] }
       ImportPaymentService.import('FILE')
       expect(ImportPaymentService).to have_received(:create_payment).exactly(:twice)
+    end
+
+    it 'assigns payments to their matching orders' do
+      allow(CSV).to receive(:read) { [1] }
+      ImportPaymentService.import('FILE')
+      expect(order.payment).to eq payment
+    end
+
+    context 'results' do
+      let(:results) { ImportPaymentService.import('FILE') }
+
+      before :each do
+        allow(ImportPaymentService).to receive(:matching_order) do |row|
+          if row == 2
+            nil
+          else
+            Order.create(user: User.create)
+          end
+        end
+        allow(CSV).to receive(:read) { [1, 2, 3] }
+      end
+
+      it 'returns the successful matches' do
+        expect(results[:successful]).to match_array [1, 3]
+      end
+
+      it 'returns the unsuccesful matches' do
+        expect(results[:unsuccessful]).to eq [2]
+      end
     end
 
   end

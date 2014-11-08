@@ -25,31 +25,31 @@ describe OrdersController do
     end
 
     it 'displays how many payments could be imported' do
-      results[:successful] = 5
+      results[:successful] = (1..5).to_a
       post :import_payments, file: 'FILE'
       expect(flash[:notice]).to match '5'
     end
 
     it 'does not display a success message if no payments imported' do
-      results[:successful] = 0
+      results[:successful] = []
       post :import_payments, file: 'FILE'
       expect(flash[:notice]).to be_nil
     end
 
     it 'displays how many payments could not be imported' do
-      results[:unsuccessful] = 3
+      results[:unsuccessful] = (1..3).to_a
       post :import_payments, file: 'FILE'
       expect(flash[:error]).to match '3'
     end
 
     it 'does not display a failure message if all payments imported' do
-      results[:unsuccessful] = 0
+      results[:unsuccessful] = []
       post :import_payments, file: 'FILE'
       expect(flash[:error]).to be_nil
     end
 
     it 'stores the unsuccessful imports' do
-      results[:failed_rows] = 'ROWS'
+      results[:unsuccessful] = 'ROWS'
       post :import_payments, file: 'FILE'
       expect(assigns(:failed_rows)).to eq 'ROWS'
     end

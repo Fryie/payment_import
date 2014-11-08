@@ -5,14 +5,14 @@ class OrdersController < ApplicationController
 
   def import_payments
     results = ImportPaymentService.import(params[:file])
-    if results[:successful] > 0
-      flash[:notice] = "#{results[:successful]} payments imported"
+    if results[:successful].size > 0
+      flash[:notice] = "#{results[:successful].size} payments imported"
     end
-    if results[:unsuccessful] > 0
-      flash[:error] = "Failed to import #{results[:unsuccessful]} payments"
+    if results[:unsuccessful].size > 0
+      flash[:error] = "Failed to import #{results[:unsuccessful].size} payments"
     end
 
-    @failed_rows = results[:failed_rows]
+    @failed_rows = results[:unsuccessful]
     render :import_payments_form
   end
 

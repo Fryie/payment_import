@@ -5,17 +5,30 @@ class ImportPaymentService
   class << self
 
     def import(file)
+      results = {
+        successful: [],
+        unsuccessful: []
+      }
+
       # encoding is iso-latin in the example file
       # a better app would try to detect the encoding automatically
       data = CSV.read(file, encoding: 'ISO8859-1', col_sep:';')
       data.each do |row|
-        create_payment(row)
+        order = matching_order(row)
+        if order
+          results[:successful] << row
+          order.payment = create_payment(row)
+        else
+          results[:unsuccessful] << row
+        end
       end
+
+      results
     end
 
     private
 
-    def matching_order
+    def matching_order(row)
 
     end
 
