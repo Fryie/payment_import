@@ -11,7 +11,7 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Orderimport
+module PaymentImport
   class Application < Rails::Application
     config.sequel.after_connect = proc do
       Sequel::Model.plugin :active_model
