@@ -12,6 +12,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 # project-specific gems
+gem 'pg'
+gem 'sequel-rails'
+
 group :development, :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'

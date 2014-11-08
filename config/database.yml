@@ -1,0 +1,8 @@
+development: &development
+  adapter: postgresql
+  database: orderimport_dev
+  user: postgres
+
+test: &test
+  <<: *development
+  database: orderimport_test
