@@ -6,10 +6,10 @@ class OrdersController < ApplicationController
   def import_payments
     results = ImportPaymentService.import(file)
     if results[:successful].size > 0
-      flash[:notice] = "#{results[:successful].size} payments imported"
+      flash.now[:notice] = "#{results[:successful].size} payments imported"
     end
     if results[:unsuccessful].size > 0
-      flash[:error] = "Failed to import #{results[:unsuccessful].size} payments"
+      flash.now[:error] = "Failed to import #{results[:unsuccessful].size} payments"
     end
 
     @failed_rows = results[:unsuccessful]

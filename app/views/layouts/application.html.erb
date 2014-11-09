@@ -13,7 +13,25 @@
 
   <body>
 
-    <%= yield %>
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><%= link_to 'Payment Import', root_path %></h1>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="row">
+      <% if flash[:error] %>
+        <div class="alert-box alert"><%= flash[:error] %></div>
+      <% end %>
+
+      <% if flash[:notice] %>
+        <div class="alert-box info"><%= flash[:notice] %></div>
+      <% end %>
+      <%= yield %>
+    </div>
+
     <%= javascript_include_tag "application" %>
   </body>
 </html>

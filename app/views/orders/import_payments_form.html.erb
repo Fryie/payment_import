@@ -1,5 +1,18 @@
+<h2 class="subheader text-center">Upload File</h1>
+
 <%= form_tag('/import', multipart: true) do %>
-  <%= label_tag(:file, 'Payment File') %>
-  <%= file_field_tag(:file) %>
-  <%= submit_tag('Upload') %>
+  <div class="row">
+    <div class="small-2 columns">
+      <%= label_tag(:file, 'Payment File', class: 'right inline') %>
+    </div>
+    <div class="small-10 columns">
+      <%= file_field_tag(:file) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-2 columns"></div>
+    <div class="small-10 columns">
+      <%= submit_tag('Upload', class: 'button small expand') %>
+    </div>
+  </div>
 <% end %>
