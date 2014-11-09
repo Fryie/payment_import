@@ -6,3 +6,6 @@ development: &development
 test: &test
   <<: *development
   database: payment_import_test
+
+production:
+  adapter: postgresql
