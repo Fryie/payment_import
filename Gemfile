@@ -14,6 +14,7 @@ gem 'spring',        group: :development
 # project-specific gems
 gem 'pg'
 gem 'sequel-rails'
+gem 'foundation-rails'
 
 group :development, :test do
   gem 'cucumber-rails', require: false
