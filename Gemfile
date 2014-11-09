@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.1.2'
 
 # standard Rails gems
 gem 'rails', '4.1.7'
@@ -20,4 +21,8 @@ group :development, :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rspec-rails'
+end
+
+group :production do
+  gem 'rails_12factor'
 end
