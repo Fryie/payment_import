@@ -26,3 +26,8 @@ Then /^the payments should be associated with the orders$/ do
     end
   ).to match_array ['DE1270070024035233xxxx', 'DE127007002403523xxxx']
 end
+
+Then /^I should see the payments that could not be associated$/ do
+  expect(find('table')).to have_content 'Krause, Uwe'
+  expect(find('table')).to have_content 'Janek Niete'
+end

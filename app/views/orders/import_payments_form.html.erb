@@ -1,3 +1,17 @@
+<% if @failed_rows.try(:any?) %>
+  <p>Failed to import the following rows:</p>
+
+  <table>
+    <% @failed_rows.each do |row| %>
+      <tr>
+        <% row.each do |cell| %>
+          <td><%= cell %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
 <h2 class="subheader text-center">Upload File</h1>
 
 <%= form_tag('/import', multipart: true) do %>
